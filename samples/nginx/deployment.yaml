@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: ns4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        volumeMounts:
+        - name: log-volume
+          mountPath: /var/log/nginx
+      - name: log-simulator
+        image: alpine
+        command: ["/bin/sh", "/scripts/simulate_logs.sh"]
+        volumeMounts:
+        - name: log-volume
+          mountPath: /var/log/nginx
+        env:
+        - name: LOG_LEVEL
+          value: "info"
+      volumes:
+      - name: log-volume
+        emptyDir: {}
