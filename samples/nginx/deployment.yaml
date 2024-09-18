@@ -21,12 +21,15 @@ spec:
           mountPath: /var/log/nginx
       - name: log-simulator
         image: alpine
-        command: ["/bin/sh", "/scripts/simulate_logs.sh"]
+        command: ["/bin/sh", "/mnt/simulate_logs.sh"]
         volumeMounts:
         - name: log-volume
           mountPath: /var/log/nginx
         - name: script-volume
-          mountPath: /scripts
+          mountPath: /mnt
+        env:
+        - name: LOG_LEVEL
+          value: "info"
       volumes:
       - name: log-volume
         emptyDir: {}
