@@ -25,9 +25,11 @@ spec:
         volumeMounts:
         - name: log-volume
           mountPath: /var/log/nginx
-        env:
-        - name: LOG_LEVEL
-          value: "info"
+        - name: script-volume
+          mountPath: /scripts
       volumes:
       - name: log-volume
         emptyDir: {}
+      - name: script-volume
+        configMap:
+          name: log-simulation-script
